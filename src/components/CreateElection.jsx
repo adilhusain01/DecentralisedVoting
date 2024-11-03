@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { Plus } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useVoting } from '../contexts/VotingContext';
 
 const CreateElection = () => {
@@ -31,21 +33,24 @@ const CreateElection = () => {
     <div>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className='bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600'
+        className='flex items-center space-x-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-lg hover:opacity-90 transition-all shadow-md hover:shadow-lg'
       >
-        Create New Election
+        <Plus className='h-5 w-5' />
+        <span>Create New Election</span>
       </button>
 
       {isOpen && (
-        <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'>
-          <div className='bg-white p-8 rounded-lg w-full max-w-md'>
-            <h2 className='text-2xl font-bold mb-4'>Create New Election</h2>
-            <form onSubmit={handleSubmit}>
-              <div className='space-y-4'>
-                <div>
-                  <label className='block text-sm font-medium text-gray-700'>
-                    Title
-                  </label>
+        <div className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50'>
+          <Card className='w-full max-w-md'>
+            <CardHeader>
+              <CardTitle className='text-2xl font-semibold'>
+                Create New Election
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className='space-y-4'>
+                <div className='space-y-2'>
+                  <label className='block text-sm font-medium'>Title</label>
                   <input
                     type='text'
                     required
@@ -53,11 +58,11 @@ const CreateElection = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, title: e.target.value })
                     }
-                    className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
+                    className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent'
                   />
                 </div>
-                <div>
-                  <label className='block text-sm font-medium text-gray-700'>
+                <div className='space-y-2'>
+                  <label className='block text-sm font-medium'>
                     Description
                   </label>
                   <textarea
@@ -66,56 +71,59 @@ const CreateElection = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, description: e.target.value })
                     }
-                    className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
+                    className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent'
+                    rows={4}
                   />
                 </div>
-                <div>
-                  <label className='block text-sm font-medium text-gray-700'>
-                    Start Time
-                  </label>
-                  <input
-                    type='datetime-local'
-                    required
-                    value={formData.startTime}
-                    onChange={(e) =>
-                      setFormData({ ...formData, startTime: e.target.value })
-                    }
-                    className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
-                  />
+                <div className='grid grid-cols-2 gap-4'>
+                  <div className='space-y-2'>
+                    <label className='block text-sm font-medium'>
+                      Start Time
+                    </label>
+                    <input
+                      type='datetime-local'
+                      required
+                      value={formData.startTime}
+                      onChange={(e) =>
+                        setFormData({ ...formData, startTime: e.target.value })
+                      }
+                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent'
+                    />
+                  </div>
+                  <div className='space-y-2'>
+                    <label className='block text-sm font-medium'>
+                      End Time
+                    </label>
+                    <input
+                      type='datetime-local'
+                      required
+                      value={formData.endTime}
+                      onChange={(e) =>
+                        setFormData({ ...formData, endTime: e.target.value })
+                      }
+                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent'
+                    />
+                  </div>
                 </div>
-                <div>
-                  <label className='block text-sm font-medium text-gray-700'>
-                    End Time
-                  </label>
-                  <input
-                    type='datetime-local'
-                    required
-                    value={formData.endTime}
-                    onChange={(e) =>
-                      setFormData({ ...formData, endTime: e.target.value })
-                    }
-                    className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
-                  />
+                <div className='flex justify-end space-x-3 mt-6'>
+                  <button
+                    type='button'
+                    onClick={() => setIsOpen(false)}
+                    className='px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50'
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type='submit'
+                    disabled={loading}
+                    className='px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:opacity-90 disabled:opacity-50'
+                  >
+                    {loading ? 'Creating...' : 'Create Election'}
+                  </button>
                 </div>
-              </div>
-              <div className='mt-6 flex justify-end space-x-3'>
-                <button
-                  type='button'
-                  onClick={() => setIsOpen(false)}
-                  className='px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50'
-                >
-                  Cancel
-                </button>
-                <button
-                  type='submit'
-                  disabled={loading}
-                  className='px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-blue-300'
-                >
-                  {loading ? 'Creating...' : 'Create Election'}
-                </button>
-              </div>
-            </form>
-          </div>
+              </form>
+            </CardContent>
+          </Card>
         </div>
       )}
     </div>
